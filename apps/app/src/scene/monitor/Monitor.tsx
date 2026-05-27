@@ -5,6 +5,7 @@ import {
   createScreenMaterial,
   createBloomMaterial,
 } from "../../shaders/screenMaterial";
+import { useCameraStore } from "../../store/useCameraStore";
 
 // Screen plane positioning (derived from monitor mesh bounds)
 const SCREEN_POSITION: [number, number, number] = [0.545, 1.215, -0.0275];
@@ -15,6 +16,8 @@ const BLOOM_SCALE = 1.3;
 
 export function Monitor(): React.JSX.Element {
   const { scene } = useGLTF("/models/monitor.glb");
+  const mode = useCameraStore((s) => s.mode);
+  const setMode = useCameraStore((s) => s.setMode);
 
   const screenMat = useMemo(() => createScreenMaterial(), []);
   const bloomMat = useMemo(() => createBloomMaterial(), []);
@@ -34,6 +37,8 @@ export function Monitor(): React.JSX.Element {
         position={SCREEN_POSITION}
         rotation={SCREEN_ROTATION}
         renderOrder={1}
+        onPointerEnter={() => mode === 'desk' && setMode('monitor')}
+        onPointerLeave={() => mode === 'monitor' && setMode('desk')}
       >
         <planeGeometry args={[SCREEN_WIDTH, SCREEN_HEIGHT]} />
         <primitive object={screenMat} attach="material" />

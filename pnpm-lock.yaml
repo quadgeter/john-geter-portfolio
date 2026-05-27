@@ -38,6 +38,9 @@ importers:
       three:
         specifier: ^0.184.0
         version: 0.184.0
+      three-stdlib:
+        specifier: ^2.36.1
+        version: 2.36.1(three@0.184.0)
       zustand:
         specifier: ^5.0.13
         version: 5.0.13(@types/react@19.2.14)(react@19.2.6)(use-sync-external-store@1.6.0(react@19.2.6))
@@ -125,7 +128,7 @@ importers:
         specifier: ^8.0.12
         version: 8.0.13(@types/node@24.12.4)
 
-  apps/quados:
+  apps/quadOS:
     dependencies:
       react:
         specifier: ^19.2.6
@@ -2367,7 +2370,7 @@ snapshots:
 
   '@eslint/eslintrc@3.3.1':
     dependencies:
-      ajv: 6.12.6
+      ajv: 6.15.0
       debug: 4.4.3
       espree: 10.4.0
       globals: 14.0.0

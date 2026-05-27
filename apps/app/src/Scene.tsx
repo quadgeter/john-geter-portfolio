@@ -1,24 +1,34 @@
+import { useRef } from 'react'
 import { OrbitControls, Environment } from '@react-three/drei'
+import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { Room } from './scene/room/Room'
 import { Desk } from './scene/desk/Desk'
 import { Monitor } from './scene/monitor/Monitor'
 import { Psp } from './scene/psp/Psp'
+import { CameraController } from './scene/camera/CameraController'
+import { useCameraStore } from './store/useCameraStore'
 import {
-  INITIAL_TARGET,
+  DESK_CAMERA_TARGET,
   FOG_COLOR,
   FOG_DENSITY,
   BACKGROUND_COLOR,
 } from './constants/scene'
 
-
 export function Scene(): React.JSX.Element {
+  const orbitRef = useRef<OrbitControlsImpl | null>(null)
+  const orbitEnabled = useCameraStore((s) => s.orbitEnabled)
+
   return (
     <>
       <color attach="background" args={[BACKGROUND_COLOR]} />
       <fogExp2 attach="fog" args={[FOG_COLOR, FOG_DENSITY]} />
 
+      <CameraController orbitRef={orbitRef} />
+
       <OrbitControls
-        target={INITIAL_TARGET}
+        ref={orbitRef}
+        enabled={orbitEnabled}
+        target={DESK_CAMERA_TARGET}
         minDistance={2}
         maxDistance={7}
         maxPolarAngle={Math.PI / 2.1}
