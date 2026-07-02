@@ -24,7 +24,7 @@ const SCREEN_ROTATION: [number, number, number] = [
 const SCREEN_WIDTH = 0.11;
 const SCREEN_HEIGHT = 0.0608;
 const BLOOM_SCALE = 1.3;
-const HIT_SCALE = 1.5;
+const HIT_SCALE = 1.1;
 
 const PIVOT: [number, number, number] = [-0.778, 1.001, 0.114];
 const NEG_PIVOT: [number, number, number] = [0.778, -1.001, -0.114];
