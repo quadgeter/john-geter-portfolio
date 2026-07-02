@@ -1,12 +1,12 @@
 import { create } from 'zustand'
 
-export type CameraMode = 'intro' | 'desk' | 'monitor'
+export type CameraMode = 'intro' | 'desk' | 'monitor' | 'psp'
 
 interface CameraState {
   mode: CameraMode
-  orbitEnabled: boolean
+  inTransition: boolean
   setMode: (mode: CameraMode) => void
-  setOrbitEnabled: (enabled: boolean) => void
+  setInTransition: (inTransition: boolean) => void
 }
 
 const isMobile =
@@ -14,7 +14,7 @@ const isMobile =
 
 export const useCameraStore = create<CameraState>()((set) => ({
   mode: isMobile ? 'desk' : 'intro',
-  orbitEnabled: isMobile,
-  setMode: (mode) => set({ mode }),
-  setOrbitEnabled: (orbitEnabled) => set({ orbitEnabled }),
+  inTransition: false,
+  setMode: (mode) => set({ mode, inTransition: true }),
+  setInTransition: (inTransition) => set({ inTransition }),
 }))

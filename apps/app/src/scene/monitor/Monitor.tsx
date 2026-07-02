@@ -1,14 +1,13 @@
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import {
   createScreenMaterial,
   createBloomMaterial,
 } from "../../shaders/screenMaterial";
 import { useCameraStore } from "../../store/useCameraStore";
 
-// Screen plane positioning (derived from monitor mesh bounds)
-const SCREEN_POSITION: [number, number, number] = [0.545, 1.215, -0.0275];
+const SCREEN_POSITION: [number, number, number] = [0.5455, 1.21, -0.0275];
 const SCREEN_ROTATION: [number, number, number] = [-0.13, -0.44, -0.055];
 const SCREEN_WIDTH = 0.53;
 const SCREEN_HEIGHT = 0.326;
@@ -16,11 +15,19 @@ const BLOOM_SCALE = 1.3;
 
 export function Monitor(): React.JSX.Element {
   const { scene } = useGLTF("/models/monitor.glb");
-  const mode = useCameraStore((s) => s.mode);
   const setMode = useCameraStore((s) => s.setMode);
 
   const screenMat = useMemo(() => createScreenMaterial(), []);
   const bloomMat = useMemo(() => createBloomMaterial(), []);
+
+  const handleEnter = useCallback(() => {
+    if (useCameraStore.getState().mode === "desk") setMode("monitor");
+  }, [setMode]);
+
+  const handleLeave = useCallback(() => {
+    const { mode, inTransition } = useCameraStore.getState();
+    if (mode === "monitor" && !inTransition) setMode("desk");
+  }, [setMode]);
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
@@ -32,19 +39,17 @@ export function Monitor(): React.JSX.Element {
     <group>
       <primitive object={scene} />
 
-      {/* Screen surface */}
       <mesh
         position={SCREEN_POSITION}
         rotation={SCREEN_ROTATION}
         renderOrder={1}
-        onPointerEnter={() => mode === 'desk' && setMode('monitor')}
-        onPointerLeave={() => mode === 'monitor' && setMode('desk')}
+        onPointerEnter={handleEnter}
+        onPointerLeave={handleLeave}
       >
         <planeGeometry args={[SCREEN_WIDTH, SCREEN_HEIGHT]} />
         <primitive object={screenMat} attach="material" />
       </mesh>
 
-      {/* Bloom glow */}
       <mesh
         position={SCREEN_POSITION}
         rotation={SCREEN_ROTATION}

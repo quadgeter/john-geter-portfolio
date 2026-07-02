@@ -2,6 +2,7 @@ import { Canvas } from '@react-three/fiber'
 import { Suspense } from 'react'
 import { Scene } from './Scene'
 import { IntroOverlay } from './components/IntroOverlay'
+import { DebugOverlay } from './components/DebugOverlay'
 import { usePreloadAssets } from './hooks/usePreloadAssets'
 import {
   CAMERA_FOV,
@@ -29,6 +30,7 @@ function App(): React.JSX.Element {
         </Suspense>
       </Canvas>
       <IntroOverlay />
+      <DebugOverlay />
     </>
   )
 }

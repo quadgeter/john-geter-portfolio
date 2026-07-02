@@ -8,7 +8,8 @@ import { Psp } from './scene/psp/Psp'
 import { CameraController } from './scene/camera/CameraController'
 import { useCameraStore } from './store/useCameraStore'
 import {
-  DESK_CAMERA_TARGET,
+  INTRO_LOOK_TARGET,
+  INTRO_AUTO_ROTATE_SPEED,
   FOG_COLOR,
   FOG_DENSITY,
   BACKGROUND_COLOR,
@@ -16,7 +17,7 @@ import {
 
 export function Scene(): React.JSX.Element {
   const orbitRef = useRef<OrbitControlsImpl | null>(null)
-  const orbitEnabled = useCameraStore((s) => s.orbitEnabled)
+  const mode = useCameraStore((s) => s.mode)
 
   return (
     <>
@@ -27,14 +28,12 @@ export function Scene(): React.JSX.Element {
 
       <OrbitControls
         ref={orbitRef}
-        enabled={orbitEnabled}
-        target={DESK_CAMERA_TARGET}
-        minDistance={2}
-        maxDistance={7}
-        maxPolarAngle={Math.PI / 2.1}
-        minAzimuthAngle={-Math.PI / 4}
-        maxAzimuthAngle={Math.PI / 4}
+        enabled={mode === 'intro'}
+        target={INTRO_LOOK_TARGET}
+        autoRotate={mode === 'intro'}
+        autoRotateSpeed={INTRO_AUTO_ROTATE_SPEED}
         enablePan={false}
+        enableZoom={false}
         enableDamping
         dampingFactor={0.08}
       />
