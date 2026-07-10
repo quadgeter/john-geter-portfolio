@@ -6,7 +6,7 @@ export const CAMERA_FAR = 50
 
 export const INTRO_ORBIT_RADIUS = 5.5
 export const INTRO_ORBIT_HEIGHT = 2.5
-export const INTRO_AUTO_ROTATE_SPEED = -0.15
+export const INTRO_AUTO_ROTATE_SPEED = -0.05
 export const INTRO_START_ANGLE = 0.4
 export const INTRO_LOOK_TARGET: Vector3Tuple = [0, 1.2, -1]
 
@@ -37,9 +37,12 @@ export const INTRO_TO_DESK_DURATION = 1200
 export const DESK_TO_MONITOR_DURATION = 800
 export const DESK_TO_PSP_DURATION = 800
 export const MONITOR_TO_DESK_DURATION = 800
-export const PSP_TO_DESK_DURATION = 800
+export const PSP_TO_DESK_DURATION = 1200
 export const ANY_TO_INTRO_DURATION = 1000
 
-export const FOG_COLOR = '#383430'
-export const FOG_DENSITY = 0.15
+export const FOG_COLOR = '#aaaaaa'
+export const FOG_DENSITY = 0.3
+export const FOG_CLEAR_CENTER: Vector3Tuple = [0, 1.0, 0.2]
+export const FOG_CLEAR_INNER_RADIUS = 2.0
+export const FOG_CLEAR_OUTER_RADIUS = 7.5
 export const BACKGROUND_COLOR = '#0a0908'

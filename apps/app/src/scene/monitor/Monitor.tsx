@@ -1,11 +1,13 @@
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 import { useMemo, useCallback } from "react";
 import {
   createScreenMaterial,
   createBloomMaterial,
 } from "../../shaders/screenMaterial";
 import { useCameraStore } from "../../store/useCameraStore";
+import { useScreenStore, INTENSITY_TARGET } from "../../store/useScreenStore";
 
 const SCREEN_POSITION: [number, number, number] = [0.5455, 1.21, -0.0275];
 const SCREEN_ROTATION: [number, number, number] = [-0.13, -0.44, -0.055];
@@ -13,6 +15,7 @@ const SCREEN_WIDTH = 0.53;
 const SCREEN_HEIGHT = 0.326;
 const HIT_SCALE = 1.1;
 const BLOOM_SCALE = 1.3;
+const INTENSITY_LERP = 0.04;
 
 export function Monitor(): React.JSX.Element {
   const { scene } = useGLTF("/models/monitor.glb");
@@ -27,13 +30,22 @@ export function Monitor(): React.JSX.Element {
 
   const handleLeave = useCallback(() => {
     const { mode, inTransition } = useCameraStore.getState();
-    if (mode === "monitor" && !inTransition) setMode("desk");
+    const { osFocused } = useScreenStore.getState();
+    if (mode === "monitor" && !inTransition && !osFocused) setMode("desk");
   }, [setMode]);
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
     screenMat.uniforms.uTime.value = t;
     bloomMat.uniforms.uTime.value = t;
+
+    const target = INTENSITY_TARGET[useScreenStore.getState().monitorState];
+    screenMat.uniforms.uIntensity.value = THREE.MathUtils.lerp(
+      screenMat.uniforms.uIntensity.value,
+      target,
+      INTENSITY_LERP,
+    );
+    bloomMat.uniforms.uIntensity.value = screenMat.uniforms.uIntensity.value;
   });
 
   return (

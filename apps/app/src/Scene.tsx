@@ -1,3 +1,4 @@
+import './shaders/fogOverrides'
 import { Environment } from '@react-three/drei'
 import { Room } from './scene/room/Room'
 import { Desk } from './scene/desk/Desk'

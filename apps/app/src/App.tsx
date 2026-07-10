@@ -3,7 +3,9 @@ import { Suspense } from 'react'
 import { Scene } from './Scene'
 import { IntroOverlay } from './components/IntroOverlay'
 import { DebugOverlay } from './components/DebugOverlay'
+import { HiddenIframes } from './components/HiddenIframes'
 import { usePreloadAssets } from './hooks/usePreloadAssets'
+import { useMessageBus } from './hooks/useMessageBus'
 import {
   CAMERA_FOV,
   CAMERA_NEAR,
@@ -13,6 +15,7 @@ import {
 
 function App(): React.JSX.Element {
   usePreloadAssets()
+  const bus = useMessageBus()
 
   return (
     <>
@@ -31,6 +34,7 @@ function App(): React.JSX.Element {
       </Canvas>
       <IntroOverlay />
       <DebugOverlay />
+      <HiddenIframes bus={bus} />
     </>
   )
 }

@@ -28,9 +28,17 @@ const DURATION_MAP: Record<string, number> = {
   "psp->desk": PSP_TO_DESK_DURATION,
 };
 
+const EASING_MAP: Record<string, EasingFunction> = {
+  "psp->desk": Easing.Cubic.InOut,
+};
+
 function getTransitionDuration(from: CameraMode, to: CameraMode): number {
   if (to === "intro") return ANY_TO_INTRO_DURATION;
   return DURATION_MAP[`${from}->${to}`] ?? 800;
+}
+
+function getTransitionEasing(from: CameraMode, to: CameraMode): EasingFunction {
+  return EASING_MAP[`${from}->${to}`] ?? Easing.Quadratic.InOut;
 }
 
 export class Camera {
@@ -68,12 +76,13 @@ export class Camera {
   transition(
     mode: CameraMode,
     duration?: number,
-    easing: EasingFunction = Easing.Quadratic.InOut,
+    easing?: EasingFunction,
   ): void {
     const target = this.keyframes.get(mode)!;
     target.reset();
 
     const dur = duration ?? getTransitionDuration(this.activeMode, mode);
+    const ease = easing ?? getTransitionEasing(this.activeMode, mode);
 
     this._tweenGroup.removeAll();
     this._tweening = true;
@@ -82,7 +91,7 @@ export class Camera {
     const posObj = { x: this._position.x, y: this._position.y, z: this._position.z };
     const posTween = new Tween(posObj)
       .to({ x: target.position.x, y: target.position.y, z: target.position.z }, dur)
-      .easing(easing)
+      .easing(ease)
       .onUpdate(() => {
         this._position.set(posObj.x, posObj.y, posObj.z);
       });
@@ -90,7 +99,7 @@ export class Camera {
     const fpObj = { x: this._focalPoint.x, y: this._focalPoint.y, z: this._focalPoint.z };
     const fpTween = new Tween(fpObj)
       .to({ x: target.focalPoint.x, y: target.focalPoint.y, z: target.focalPoint.z }, dur)
-      .easing(easing)
+      .easing(ease)
       .onUpdate(() => {
         this._focalPoint.set(fpObj.x, fpObj.y, fpObj.z);
       })

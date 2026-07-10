@@ -7,6 +7,7 @@ import {
   createBloomMaterial,
 } from "../../shaders/screenMaterial";
 import { useCameraStore } from "../../store/useCameraStore";
+import { useScreenStore, INTENSITY_TARGET } from "../../store/useScreenStore";
 import {
   PSP_HELD_LIFT,
   PSP_HELD_FORWARD,
@@ -26,6 +27,7 @@ const SCREEN_HEIGHT = 0.0608;
 const BLOOM_SCALE = 1.3;
 const HIT_SCALE = 1.1;
 
+const INTENSITY_LERP = 0.04;
 const PIVOT: [number, number, number] = [-0.778, 1.001, 0.114];
 const NEG_PIVOT: [number, number, number] = [0.778, -1.001, -0.114];
 
@@ -44,13 +46,22 @@ export function Psp(): React.JSX.Element {
 
   const handleLeave = useCallback(() => {
     const { mode, inTransition } = useCameraStore.getState();
-    if (mode === "psp" && !inTransition) setMode("desk");
+    const { osFocused } = useScreenStore.getState();
+    if (mode === "psp" && !inTransition && !osFocused) setMode("desk");
   }, [setMode]);
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
     screenMat.uniforms.uTime.value = t;
     bloomMat.uniforms.uTime.value = t;
+
+    const intensityTarget = INTENSITY_TARGET[useScreenStore.getState().pspState];
+    screenMat.uniforms.uIntensity.value = THREE.MathUtils.lerp(
+      screenMat.uniforms.uIntensity.value,
+      intensityTarget,
+      INTENSITY_LERP,
+    );
+    bloomMat.uniforms.uIntensity.value = screenMat.uniforms.uIntensity.value;
 
     const { mode, inTransition } = useCameraStore.getState();
     const held = mode === "psp";
