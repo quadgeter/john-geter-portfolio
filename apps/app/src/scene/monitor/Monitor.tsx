@@ -112,7 +112,7 @@ export function Monitor(): React.JSX.Element {
         <group position={SCREEN_POSITION} rotation={SCREEN_ROTATION}>
           <Html
             transform
-            distanceFactor={0.209}
+            distanceFactor={0.2071}
             style={{
               width: IFRAME_PX_WIDTH,
               height: IFRAME_PX_HEIGHT,
