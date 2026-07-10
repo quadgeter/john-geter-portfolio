@@ -1,7 +1,8 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useCallback } from 'react'
 import type { R3FToQuadOS, R3FToGameOS, QuadOSToR3F, GameOSToR3F, ScreenState } from '@repo/shared-types/message-types'
 import { useScreenStore } from '../store/useScreenStore'
 import { useCameraStore } from '../store/useCameraStore'
+import { monitorIframeRef, pspIframeRef } from '../lib/iframeRefs'
 
 const QUADOS_URL = import.meta.env.VITE_QUADOS_URL || 'http://localhost:3001'
 const GAMEOS_URL = import.meta.env.VITE_GAMEOS_URL || 'http://localhost:3002'
@@ -21,8 +22,7 @@ const QUADOS_ORIGIN = getOrigin(QUADOS_URL)
 const GAMEOS_ORIGIN = getOrigin(GAMEOS_URL)
 
 export interface MessageBus {
-  monitorIframeRef: React.RefObject<HTMLIFrameElement | null>
-  pspIframeRef: React.RefObject<HTMLIFrameElement | null>
+  pspIframeRef: typeof pspIframeRef
 }
 
 function makeHandler(
@@ -47,9 +47,6 @@ function makeHandler(
 }
 
 export function useMessageBus(): MessageBus {
-  const monitorIframeRef = useRef<HTMLIFrameElement | null>(null)
-  const pspIframeRef = useRef<HTMLIFrameElement | null>(null)
-
   const sendToQuadOS = useCallback((msg: R3FToQuadOS) => {
     monitorIframeRef.current?.contentWindow?.postMessage(msg, QUADOS_ORIGIN)
   }, [])
@@ -109,5 +106,5 @@ export function useMessageBus(): MessageBus {
     return () => window.removeEventListener('resize', handleResize)
   }, [sendToQuadOS, sendToGameOS])
 
-  return { monitorIframeRef, pspIframeRef }
+  return { pspIframeRef }
 }

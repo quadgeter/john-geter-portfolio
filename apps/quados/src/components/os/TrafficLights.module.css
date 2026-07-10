@@ -1,0 +1,54 @@
+.trafficLights {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding-right: 8px;
+  z-index: 1;
+}
+
+.button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 0.5px solid rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  padding: 0;
+  outline: none;
+}
+
+.symbol {
+  font-size: 7px;
+  line-height: 1;
+  color: transparent;
+  font-weight: 700;
+}
+
+.close {
+  background: radial-gradient(circle at 35% 35%, #ff7f6e, #ff5f4e);
+  border-color: #df4032;
+}
+
+.minimize {
+  background: radial-gradient(circle at 35% 35%, #ffd057, #f5c02e);
+  border-color: #d4a00a;
+}
+
+.maximize {
+  background: radial-gradient(circle at 35% 35%, #6fe06b, #4ec94b);
+  border-color: #30a12d;
+}
+
+.trafficLights:hover .symbol {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* Inactive window: gray out all traffic lights */
+.inactive .close,
+.inactive .minimize,
+.inactive .maximize {
+  background: #ccc;
+  border-color: #aaa;
+}

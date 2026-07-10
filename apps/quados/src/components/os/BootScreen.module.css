@@ -1,0 +1,45 @@
+.bootScreen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #e0e0e0;
+  z-index: 99999;
+}
+
+.logo {
+  font-size: 48px;
+  margin-bottom: 24px;
+  line-height: 1;
+}
+
+.logo::after {
+  content: "\f8ff";
+}
+
+.progressBar {
+  width: 160px;
+  height: 8px;
+  background: #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #5a9df5, #2563eb);
+  border-radius: 4px;
+  animation: fillProgress 1.5s ease-in-out forwards;
+}
+
+@keyframes fillProgress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}

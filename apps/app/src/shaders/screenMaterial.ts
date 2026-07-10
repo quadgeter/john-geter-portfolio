@@ -48,16 +48,16 @@ void main() {
   float boxDist = length(max(d, 0.0));
 
   // Exponential falloff from screen edge outward
-  float glow = exp(-boxDist * 14.0) * 0.55;
+  float glow = exp(-boxDist * 18.0) * 0.3;
 
   // Soft inner-edge highlight
   float innerDist = -min(max(d.x, d.y), 0.0);
-  float edgeGlow = exp(-innerDist * 10.0) * 0.15;
+  float edgeGlow = exp(-innerDist * 12.0) * 0.08;
 
   float totalGlow = (glow + edgeGlow) * uIntensity;
 
   vec3 color = uColor * totalGlow;
-  gl_FragColor = vec4(color, totalGlow * 0.7);
+  gl_FragColor = vec4(color, totalGlow * 0.45);
 }
 `
 

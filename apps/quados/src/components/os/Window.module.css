@@ -1,0 +1,72 @@
+.window {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    0 1px 4px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.window.focused {
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.titleBar {
+  height: 22px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  cursor: grab;
+  flex-shrink: 0;
+
+  background: linear-gradient(
+    180deg,
+    #d0d0d0 0%,
+    #e8e8e8 45%,
+    #d4d4d4 50%,
+    #c8c8c8 55%,
+    #b8b8b8 100%
+  );
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.titleBar.inactive {
+  background: linear-gradient(
+    180deg,
+    #e8e8e8 0%,
+    #f0f0f0 45%,
+    #e4e4e4 50%,
+    #dcdcdc 55%,
+    #d4d4d4 100%
+  );
+}
+
+.titleBar:active {
+  cursor: grabbing;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #333;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.windowContent {
+  flex: 1;
+  background: #fff;
+  overflow: auto;
+}
