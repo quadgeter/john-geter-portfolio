@@ -78,12 +78,19 @@ export function useMessageBus(): MessageBus {
     const unsub = useCameraStore.subscribe((state, prev) => {
       if (state.mode === prev.mode) return
 
+      const { setMonitorState, setPspState } = useScreenStore.getState()
       const dims = { winWidth: window.innerWidth, winHeight: window.innerHeight }
 
       if (state.mode === 'monitor') {
         sendToQuadOS({ type: 'enter', ...dims, isMobile })
       } else if (state.mode === 'psp') {
         sendToGameOS({ type: 'enter', ...dims, isMobile })
+      }
+
+      // Idle glow when arriving at desk from intro
+      if (state.mode === 'desk' && prev.mode === 'intro') {
+        setMonitorState('sleep')
+        setPspState('sleep')
       }
     })
     return unsub
